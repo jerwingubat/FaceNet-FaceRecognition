@@ -1,6 +1,6 @@
 # Face Recognition with MTCNN and InceptionResnetV1
 
-This project implements a face recognition system using the MTCNN (Multi-task Cascaded Convolutional Networks) for face detection and InceptionaqResnetV1 for generating face embeddings. The system is capable of identifying known faces from a webcam feed by comparing their embeddings to previously stored known embeddings.
+This project implements a face recognition system using the MTCNN <b><i>(Multi-task Cascaded Convolutional Networks)</b></i> for face detection and <b><i>InceptionResnetV1</b></i> for generating face embeddings. The system is capable of identifying known faces from a webcam feed by comparing their embeddings to previously stored known embeddings.
 
 ## Requirements
 
@@ -13,11 +13,12 @@ To run this project, you'll need to install the following dependencies:
 - NumPy
 - SciPy
 - PIL (Pillow)
+- TorchVision
 
 You can install the necessary dependencies via `pip`:
 
 ```bash
-pip install opencv-python torch facenet-pytorch numpy scipy pillow
+pip install facenet-pytorch torch torchvision numpy scipy opencv-python pillow
 ```
 ## Setup
 ### 1. Install Dependencies
@@ -41,6 +42,10 @@ FaceNet/
 ├── app.py
 └── README.md
 ```
+### 5. CSV Logs
+- <b>recognition_log.csv:</b> ➡ <i>This file appends every detection with name, similarity score, and detection timestamp.</i>
+- <b>current_recognitions.csv:</b> ➡ <i>Holds only the most recent detection for each person and updates automatically.</i>
+
 ## How it Works
 ### Face Detection
 The MTCNN model detects faces in a webcam feed. If no faces are detected, the program will display a message indicating so.
