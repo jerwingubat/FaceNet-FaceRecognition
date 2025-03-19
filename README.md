@@ -21,7 +21,7 @@ pip install opencv-python torch facenet-pytorch numpy scipy pillow
 ```
 ## Setup
 ### 1. Install Dependencies
-First, make sure you have Python 3.x installed. Then, install the required libraries using pip:
+First, make sure you have Python 3.12.6 installed. Then, install the required libraries using pip:
 ```cmd
 pip install opencv-python torch facenet-pytorch numpy scipy pillow
 ```
