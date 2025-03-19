@@ -37,7 +37,7 @@ Your project directory should look like this:
 ```
 FaceNet/
 ├── people/
-│   ├── Jerwin Gubat
+│   ├── Jerwin Gubat/
 │       └── jerwingubat.jpg
 ├── app.py
 └── README.md
