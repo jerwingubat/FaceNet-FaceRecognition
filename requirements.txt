@@ -1,0 +1,6 @@
+pip install opencv-python
+pip install torch
+pip install facenet-pytorch
+pip install numpy
+pip install scipy
+pip install pillow
