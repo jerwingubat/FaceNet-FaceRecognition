@@ -37,17 +37,14 @@ def log_or_update_current(name, similarity):
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     current_records = {}
 
-    # Load existing data
     if os.path.exists("current_recognitions.csv"):
         with open("current_recognitions.csv", mode="r") as file:
             reader = csv.DictReader(file)
             for row in reader:
                 current_records[row["Name"]] = {"Similarity": row["Similarity"], "DateTime": row["DateTime"]}
 
-    # Update with new data
     current_records[name] = {"Similarity": f"{similarity:.4f}", "DateTime": now}
 
-    # Save updated data
     with open("current_recognitions.csv", mode="w", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(["Name", "Similarity", "DateTime"])
