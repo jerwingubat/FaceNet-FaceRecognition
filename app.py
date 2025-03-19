@@ -77,7 +77,6 @@ while True:
 
     cv2.imshow("Face Recognition", frame)
 
-    # Press 'q' to exit
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
