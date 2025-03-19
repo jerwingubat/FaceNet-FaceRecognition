@@ -57,7 +57,7 @@ while True:
         print("Failed to grab frame.")
         break
 
-    # Convert frame to PIL Image
+    # Convert frame to Pillow Image
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     img_pil = Image.fromarray(frame_rgb)
 
