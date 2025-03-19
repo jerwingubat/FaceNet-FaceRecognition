@@ -30,15 +30,15 @@ pip install opencv-python torch facenet-pytorch numpy scipy pillow
 The InceptionResnetV1 and MTCNN models are pretrained on the VGGFace2 dataset and are available through the facenet-pytorch library. These models will be automatically loaded when running the script, so no additional manual setup is required.
 ### 3. Prepare Known Faces
 You need to prepare a directory (e.g., people/) where you store images of known individuals. Each image should be named after the person (e.g., jerwin_gubat.jpg). These images will be used to generate embeddings for recognition.
-- Create a folder called people/ inside your project directory.
-- Add images of people you want the system to recognize in the people/ directory. Each image should be named after the person (e.g., jerwin_gubat.jpg).
+- Create a folder called <i>people/</i> inside your project directory.
+- Inside <i>people/</i> directory, create a subfolder for each person (folder name = person's label).
 ### 4. Directory Structure
 Your project directory should look like this:
 ```
 FaceNet/
 ├── people/
-│   ├── jerwin_gubat.jpg
-│   └── juan_delacruz.jpg
+│   ├── Jerwin Gubat
+│       └── jerwingubat.jpg
 ├── app.py
 └── README.md
 ```
