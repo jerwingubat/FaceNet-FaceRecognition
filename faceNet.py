@@ -64,15 +64,23 @@ def get_face_embedding_from_pil(img_pil):
 
 def load_known_embeddings(people_dir):
     known_embeddings = {}
-    for filename in os.listdir(people_dir):
-        if filename.endswith('.jpg'):
-            name = filename.split('.')[0]
-            img = Image.open(os.path.join(people_dir, filename)).convert('RGB')
-            embedding = get_face_embedding_from_pil(img)
-            if embedding is not None:
-                known_embeddings[name] = embedding
-    print(f"Loaded embeddings for: {list(known_embeddings.keys())}")
-    return known_embeddings
+    for person_name in os.listdir(people_dir):
+        person_folder = os.path.join(people_dir, person_name)
+        if os.path.isdir(person_folder):
+            for filename in os.listdir(person_folder):
+                if filename.endswith('.jpg'):
+                    img = Image.open(os.path.join(person_folder, filename)).convert('RGB')
+                    embedding = get_face_embedding_from_pil(img)
+                    if embedding is not None:
+         
+                        if person_name not in known_embeddings:
+                            known_embeddings[person_name] = []
+                        known_embeddings[person_name].append(embedding)
+
+    averaged_embeddings = {name: np.mean(embs, axis=0) for name, embs in known_embeddings.items()}
+    print(f"Loaded embeddings for: {list(averaged_embeddings.keys())}")
+    return averaged_embeddings
+
 
 def recognize_face_embedding(embedding, known_embeddings, threshold=0.7):
     best_match = None
