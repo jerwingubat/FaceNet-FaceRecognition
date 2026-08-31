@@ -1,6 +1,5 @@
 # Face Recognition with MTCNN and InceptionResnetV1
-
-This project implements a face recognition system using the MTCNN <b><i>(Multi-task Cascaded Convolutional Networks)</b></i> for face detection and <b><i>InceptionResnetV1</b></i> for generating face embeddings. The system is capable of identifying known faces from a webcam feed by comparing their embeddings to previously stored known embeddings.
+This project is a face recognition system that can detect and identify people using a webcam. To register a user, the system only needs a **single image** of their face. Once the image is saved, the system can recognize and identify that person when they appear in front of the webcam by comparing their face with the saved image.
 
 ## Requirements
 

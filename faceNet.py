@@ -9,12 +9,10 @@ import csv
 from datetime import datetime
 import time
 
-# Initialize models
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 mtcnn = MTCNN(image_size=160, margin=0, device=device)
 resnet = InceptionResnetV1(pretrained='vggface2').to(device).eval()
 
-# Create CSV files if they don't exist
 if not os.path.exists("recognition_log.csv"):
     with open("recognition_log.csv", mode="w", newline="") as file:
         writer = csv.writer(file)
@@ -92,48 +90,48 @@ def recognize_face_embedding(embedding, known_embeddings, threshold=0.7):
     else:
         return None, None
 
-people_dir = "people/"
-known_embeddings = load_known_embeddings(people_dir)
+if __name__ == "__main__":
+    people_dir = "people/"
+    known_embeddings = load_known_embeddings(people_dir)
 
-last_logged_time = {}
+    last_logged_time = {}
 
-cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-print("Starting webcam... press 'q' to quit.")
+    cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    print("Starting webcam... press 'q' to quit.")
 
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        print("Failed to grab frame.")
-        break
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            print("Failed to grab frame.")
+            break
 
-    # Convert frame to PIL image
-    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    img_pil = Image.fromarray(frame_rgb)
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        img_pil = Image.fromarray(frame_rgb)
 
-    face = mtcnn(img_pil)
-    if face is not None:
-        with torch.no_grad():
-            embedding = resnet(face.unsqueeze(0).to(device)).squeeze().cpu().numpy()
+        face = mtcnn(img_pil)
+        if face is not None:
+            with torch.no_grad():
+                embedding = resnet(face.unsqueeze(0).to(device)).squeeze().cpu().numpy()
 
-        name, sim = recognize_face_embedding(embedding, known_embeddings)
-        if name and sim > 0.7:
-            cv2.putText(frame, f"{name} ({sim:.2f})", (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-            current_time = time.time()
+            name, sim = recognize_face_embedding(embedding, known_embeddings)
+            if name and sim > 0.7:
+                cv2.putText(frame, f"{name} ({sim:.2f})", (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                current_time = time.time()
 
-            if name not in last_logged_time or (current_time - last_logged_time[name] > 5):
-                log_to_history(name, sim)
-                log_or_update_current(name, sim)
-                last_logged_time[name] = current_time
+                if name not in last_logged_time or (current_time - last_logged_time[name] > 5):
+                    log_to_history(name, sim)
+                    log_or_update_current(name, sim)
+                    last_logged_time[name] = current_time
+            else:
+                cv2.putText(frame, "Unknown", (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
         else:
-            cv2.putText(frame, "Unknown", (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            cv2.putText(frame, "No Face Detected", (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
-    else:
-        cv2.putText(frame, "No Face Detected", (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+        cv2.imshow("Face Recognition", frame)
 
-    cv2.imshow("Face Recognition", frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-cap.release()
-cv2.destroyAllWindows()
+    cap.release()
+    cv2.destroyAllWindows()

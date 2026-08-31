@@ -6,7 +6,6 @@ import numpy as np
 from scipy.spatial.distance import cosine
 from PIL import Image
 
-# Initialize models
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 mtcnn = MTCNN(image_size=160, margin=0, device=device)
 resnet = InceptionResnetV1(pretrained='vggface2').to(device).eval()
@@ -52,7 +51,6 @@ def recognize_face_embedding(embedding, known_embeddings, threshold=0.7):
     else:
         return None, None
 
-# Load known faces
 people_dir = "people/"
 known_embeddings = load_known_embeddings(people_dir)
 
@@ -65,11 +63,9 @@ while True:
         print("Failed to grab frame.")
         break
 
-    # Convert frame to Pillow Image
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     img_pil = Image.fromarray(frame_rgb)
 
-    # Detect face and get embedding
     face = mtcnn(img_pil)
     if face is not None:
         with torch.no_grad():

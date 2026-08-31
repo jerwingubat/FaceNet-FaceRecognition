@@ -4,3 +4,5 @@ pip install facenet-pytorch
 pip install numpy
 pip install scipy
 pip install pillow
+pip install PyQt6
+pip install pygrabber
